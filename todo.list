@@ -1,0 +1,9 @@
+1. Have to work on the algorithm editor, to ensure the tabs are working properly
+2. On clicking an algo from the algo list menu the pseudocode should be in pseudocode tab, the configuration should be in the configs tab 
+[e.g. start vertex, DFS on forest, etc. for DFS algo]
+3. Implement the start simulation and stop simulation and simulation speed controller -- super easy, 10 minutes 
+4. Implement the console for logs and feature to clear the console, just like my LEO-SAT-SIM
+5. Implement a few to more features like clear the graph editor, reset graph, export data [graph picture as svg, adjacency matrix, console logs, etc.]
+6. Lock the graph_editor while starting a simulation and unlock it when the simulation stops
+7. Make the random graph generation and user accessible feature through a button
+8. Implement few more of the graph algorithms for future simulation

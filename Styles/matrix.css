@@ -1,0 +1,16 @@
+#matrix-scroll-container {
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: auto;
+    max-height: 100%; /* Adjust this value to fit your layout */
+    max-width: 70vh;
+    /* min-width: 70vw; */
+}
+table {
+    width: 100%; /*Make the table take up full width */
+    border-collapse: collapse; /* Optional: To remove space between table cells */
+}
+td {
+    padding: 8px; /* Optional: For better readability */
+    border: 1px solid #ccc; /* Optional: Border for table cells */
+    text-align: center; /* Center-align the text in the table */
+}

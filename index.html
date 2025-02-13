@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graph Algorithm Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.31.0/dist/cytoscape.min.js"></script>
+    <link rel="stylesheet" href="./Styles/matrix.css">
+    <link rel="stylesheet" href="./Styles/UI.css">
+    
+    <style>
+        /* Smooth dragging effect */
+        .draggable {
+            cursor: grab;
+            user-select: none;
+        }
+    </style>
+
+    <link rel="stylesheet" href="./Styles/algo_editor.css">
+</head>
+<body class="bg-gray-900 text-white">
+
+    <!-- Container -->
+    <div class="flex flex-col h-screen w-screen">
+
+        <!-- Top Bar -->
+        <div class="bg-gray-800 p-2 flex justify-between items-center">
+            <h1 class="text-xl font-bold">Graph Algorithm Simulator</h1>
+            
+            <div class="flex items-center">
+                <input unchecked id="directed-mode" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                <label for="directed-mode" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Directed Mode</label>
+            </div>
+
+            <!-- Menu Button -->
+            <div class="relative">
+                <!-- Alpine.js for Interactivity -->
+                <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+                <!-- Menu Button -->
+                <div x-data="{ open: false, algorithms: [] }"  class="relative">
+                    <button id="menu-btn" @click="open = !open" class="bg-gray-800/70 backdrop-blur-lg text-2xl  px-3 py-1 rounded-2xl text-white hover:bg-gray-700 transition-all duration-300">
+                        ☰
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div id="menu-dropdown" x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-56 bg-gray-900/30 backdrop-blur-lg text-white rounded-xl shadow-xl overflow-hidden">
+                        <ul class="py-2">
+                        
+                            <!-- Algorithm Selector -->
+                        <li class="px-5 py-2 hover:bg-red-1000 cursor-pointer flex justify-between items-center hover:bg-red-700" onclick="toggleMenu()">
+                            Algorithm Selector ▼
+                        </li>
+
+                        <!-- Simple submenu with search -->
+                        <div class="relative">
+                            <input 
+                                type="text" 
+                                id="searchInput" 
+                                placeholder="Search algorithms..." 
+                                class="px-4 py-2 bg-gray-700 text-white w-full rounded-t" 
+                                oninput="filterAlgorithms()"
+                            >
+                            <ul id="algoMenu" class="pl-4 bg-gray-800/10 text-white max-h-64 overflow-y-auto">
+                                <!-- List of algorithms will be populated here -->
+                            </ul>
+                        </div>
+
+
+
+                            <!-- Editor Theme Selector -->
+                            <li class="px-5 py-2 hover:bg-[#ff6347] cursor-pointer flex justify-between items-center">
+                                Editor Theme
+                                <select class="bg-gray-800 text-white px-2 py-1 rounded">
+                                    <option>Dark</option>
+                                    <option>Light</option>
+                                    <option>Dracula</option>
+                                </select>
+                            </li>
+
+                            <!-- Algorithm Speed Control -->
+                            <li class="px-5 py-2 hover:bg-[#1cb2bb] cursor-pointer flex justify-between items-center">
+                                Simulation Speed
+                                <input type="range" min="1" max="5" class="w-20">
+                            </li>
+
+                            <!-- Toggle Grid (Checkbox) -->
+                            <li class="px-5 py-2 hover:bg-gray-700 cursor-pointer flex justify-between items-center">
+                                Show Grid
+                                <input type="checkbox" class="w-4 h-4">
+                            </li>
+
+                            <!-- Help -->
+                            <li class="px-5 py-2 hover:bg-gray-700 cursor-pointer">Help</li>
+                        </ul>
+                    </div>
+                </div>
+
+
+                
+            </div>
+
+        </div>
+
+        <!-- Main Layout -->
+         <!-- Top Panels -->
+        <div id="top-panels" class="flex flex-1 overflow-hidden draggable">
+            
+            <!-- Graph Editor (Main Center Panel) -->
+            <div id="graph-editor" class="flex-1 bg-gray-700 p-4 m-2 rounded-lg draggable relative">
+                <p class="text-center text-white">Graph Editor</p>
+                <div id="cy" class="absolute inset-0"></div> <!-- This is where the graph will be drawn -->
+            </div>
+
+
+            <!-- Resize Handle -->
+            <div class="w-2 bg-gray-600 cursor-ew-resize" id="resize-handle"></div>
+
+
+
+
+<!-- Algorithm Editor (Right Panel) -->
+<div id="algo-editor" class="w-1/4 bg-gray-800 p-4 m-2 rounded-lg">
+    <p class="text-center text-white mb-4">Algorithm Editor</p>
+
+    <!-- Tabs -->
+    <div class="flex justify-between mb-4">
+        <button id="config-tab" class="tab-button w-full text-center py-2 rounded-t-lg" onclick="switchTab('config')">
+            Configuration
+        </button>
+        <button id="pseudocode-tab" class="tab-button w-full text-center py-2 rounded-t-lg" onclick="switchTab('pseudocode')">
+            Pseudocode
+        </button>
+        <button id="info-tab" class="tab-button w-full text-center py-2 rounded-t-lg" onclick="switchTab('info')">
+            Information
+        </button>
+    </div>
+
+    <!-- Tab Content -->
+    <div id="config" class="tab-content hidden">
+        <textarea class="w-full h-40 bg-gray-700 text-white p-2 rounded-lg" placeholder="Enter configuration here..."></textarea>
+    </div>
+    <div id="pseudocode" class="tab-content hidden">
+        <textarea class="w-full h-40 bg-gray-700 text-white p-2 rounded-lg" placeholder="Enter pseudocode here..."></textarea>
+    </div>
+    <div id="info" class="tab-content hidden">
+        <p class="text-white">Algorithm information and description will go here.</p>
+    </div>
+
+    <!-- Start Simulation Button -->
+    <div class="mt-4 text-center">
+        <button class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg w-full">
+            Start Simulation
+        </button>
+    </div>
+</div>
+
+<script>
+   
+</script>
+
+
+
+
+
+
+
+
+
+        </div>
+        <div class="h-2 bg-gray-600 cursor-ns-resize" id="resize-handle-vertical"></div>
+        <!-- Bottom Panels -->
+        <div id="bottom-panels" class="flex w-full overflow-hidden draggable">
+            
+            <!-- Adjacency Matrix (Bottom Panel) -->
+            <div id="adjacency-matrix" class="flex-1 bg-gray-800 p-4 m-2 rounded-lg draggable">
+                <p class="text-center">Adjacency Matrix</p>
+                <!-- Scrollable container for the table -->
+                <div id="matrix-scroll-container" class="overflow-auto max-h-96">
+                    <!-- Table will be added dynamically here -->
+                </div>
+            </div>
+
+
+            <!-- Resize Handle -->
+            <div class="w-2 bg-gray-600 cursor-ew-resize" id="resize-handle-bottom"></div>
+
+            <!-- Logging Panel -->
+            <div id="log-panel" class="w-1/4 bg-gray-700 p-4 m-2 rounded-lg draggable">
+                <p class="text-center">Logs</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    
+
+</body>
+
+<script src="global.js"></script>
+<script src="Algorithms/traversals.js"></script>
+<script src="./UI.js"></script>
+<script src="./graph_editor.js"></script>
+<script src="controls.js"></script>
+<script src="./adjacency_matrix.js"></script>
+<script src="./algo_editor.js"></script>
+</html>

@@ -1,0 +1,12 @@
+#resize-handle, #resize-handle-bottom {
+    width: 8px; /* Set a fixed width */
+    min-width: 8px; /* Prevent shrinking */
+    max-width: 8px; /* Prevent expansion */
+}
+
+#resize-handle-vertical{
+    height: 8px; /* Set a fixed width */
+    min-height: 8px; /* Prevent shrinking */
+    max-height: 8px; /* Prevent expansion */
+}
+

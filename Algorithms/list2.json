@@ -1,0 +1,37 @@
+{
+    "algorithms": [
+        {
+        "name": "Depth-First Search",
+        "type": "Traversal",
+        "author": "Charles Pierre Trémaux",
+        "year_introduced": "19th century",
+        "pseudocode": "NA",
+        "time_complexity": "O(V + E)",
+        "space_complexity": "O(V)",
+        "strategy_used": "Exhaustive Search",
+        "data_structures_used": ["Stack", "Adjacency List", "Adjacency Matrix"]
+        },
+        {
+        "name": "Breadth-First Search",
+        "type": "Traversal",
+        "author": "E. W. Dijkstra",
+        "year_introduced": 1959,
+        "pseudocode": "NA",
+        "time_complexity": "O(V + E)",
+        "space_complexity": "O(V)",
+        "strategy_used": "Exhaustive Search",
+        "data_structures_used": ["Queue", "Adjacency List", "Adjacency Matrix"]
+        },
+        {
+        "name": "Dijkstra's Algorithm",
+        "type": "Shortest Path Finding",
+        "author": "E. W. Dijkstra",
+        "year_introduced": 1956,
+        "pseudocode": "NA",
+        "time_complexity": "O((V + E) log V)",
+        "space_complexity": "O(V + E)",
+        "strategy_used": "Greedy",
+        "data_structures_used": ["Priority Queue", "Adjacency List", "Adjacency Matrix"]
+        }
+    ]
+}

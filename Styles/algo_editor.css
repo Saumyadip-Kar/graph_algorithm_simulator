@@ -1,0 +1,22 @@
+/* Styling for the tab buttons */
+    .tab-button {
+        background-color: #2d2d2d;
+        border: none;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    
+    /* Active tab styling */
+    .tab-button.bg-gray-600 {
+        background-color: #4c4c4c;
+    }
+
+    /* Tab content hidden by default */
+    .tab-content {
+        display: none;
+    }
+
+    .hidden {
+        display: none;
+    }
